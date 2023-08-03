@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "299128854073",
+    "project_id": "gradle-crap",
+    "storage_bucket": "gradle-crap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299128854073:android:bd7341fec151b7f648dfe8",
+        "android_client_info": {
+          "package_name": "com.example.gradle_crap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299128854073-5hg6mn51a9u0jg0obkbu8o66ge4onu3j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gradle_crap",
+            "certificate_hash": "de3384424ebcb0c5ea26a9f2ff746d22f1a647e1"
+          }
+        },
+        {
+          "client_id": "299128854073-jua8hks2ujcvp29046oep52cicva5prt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoocLt09FOHvyjaDIblhkIrDQns8fnrn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299128854073-jua8hks2ujcvp29046oep52cicva5prt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "299128854073-j5v3rcktgr60b30bpn1idihcb51o601d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.gradleCrap"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
