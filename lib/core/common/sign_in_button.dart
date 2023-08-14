@@ -8,7 +8,7 @@ class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
 
   void signInWithGoogle(BuildContext context, WidgetRef ref) {
-    ref.read(authControllerProvider).signInWithGoogle(context);
+    ref.read(authControllerProvider.notifier).signInWithGoogle(context);
   }
 
   @override
@@ -27,7 +27,7 @@ class SignInButton extends ConsumerWidget {
           'Continue with Google',
           style: TextStyle(fontSize: 18),
         ),
-        //you use styleFrom so you dont have to specify all the parameters, instead
+        //you use .styleFrom so you dont have to specify all the parameters, instead
         // you only specify the ones you want to override
         style: ElevatedButton.styleFrom(
           backgroundColor: Pallete.greyColor,

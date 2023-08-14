@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gradle_crap/core/common/error_text.dart';
+import 'package:gradle_crap/core/common/loader.dart';
+import 'package:gradle_crap/features/auth/controller/auth_controller.dart';
+import 'package:gradle_crap/models/user_model.dart';
+import 'package:gradle_crap/router.dart';
 import 'package:gradle_crap/theme/pallete.dart';
-import 'features/auth/screens/login_screen.dart';
+import 'package:routemaster/routemaster.dart';
 import 'firebase_options.dart';
 
 //check if you are logged in to firebase with the command
@@ -41,16 +47,45 @@ void main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
   @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
+//
+  UserModel? userModel;
+
+  getData(Ref ref, User data) async {
+    final usermodel = await
+        //prob change both to .read
+        ref.watch(authControllerProvider.notifier).getUserData(data.uid).first;
+    ref.read(userProvider.notifier).update((state) => usermodel);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Reddit Tutorial',
-      theme: Pallete.darkModeAppTheme,
-      home: const LoginScreen(),
-    );
+    return ref.watch(authStateChangeProvider).when(
+          data: (data) => MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'Reddit Tutorial',
+            theme: Pallete.darkModeAppTheme,
+            routerDelegate: RoutemasterDelegate(
+              routesBuilder: (context) {
+                if (data != null) {
+                  return loggedInRoute;
+                } else {
+                  // maybe remove else and just return
+                  return loggedOutRoute;
+                }
+              },
+            ),
+            routeInformationParser: const RoutemasterParser(),
+          ),
+          error: (error, stackTrace) => ErrorText(text: error.toString()),
+          loading: () => const Loader(),
+        );
   }
 }

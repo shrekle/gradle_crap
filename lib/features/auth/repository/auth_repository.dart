@@ -9,7 +9,7 @@ import 'package:gradle_crap/core/constants/constants.dart';
 import 'package:gradle_crap/core/providers/firebase_providers.dart';
 import 'package:gradle_crap/core/type_defs.dart';
 import 'package:gradle_crap/core/failure.dart';
-import 'package:gradle_crap/features/auth/repository/firebase_constants.dart';
+import 'package:gradle_crap/core/constants/firebase_constants.dart';
 import 'package:gradle_crap/models/user_model.dart';
 
 final authRepositoryProvider = Provider(
@@ -20,6 +20,11 @@ final authRepositoryProvider = Provider(
   ),
 );
 
+//
+//
+//
+//
+//
 class AuthRepository {
   AuthRepository({
     required FirebaseFirestore firestore,
@@ -38,6 +43,8 @@ class AuthRepository {
 
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
+
+  Stream<User?> get authStateChange => _auth.authStateChanges(); //comes from FB
 
   FutureEither<UserModel> signInWithGoogle() async {
     try {
@@ -68,9 +75,9 @@ class AuthRepository {
         );
         await _users.doc(userCredential.user!.uid).set(userModel.toMap());
       } else {
-        // .first turns the stream into a future, so itll work witht he return
-        //type of the func, since future give only one result it works, as
-        //opposed toa stream that continually returns results
+        // .first turns the stream into a future, so itll work with the return
+        //type of the func, since future give only one result it will work, as
+        //opposed to a stream that continually returns results
         userModel = await getUserData(userCredential.user!.uid).first;
       }
       return right(userModel);
@@ -84,8 +91,10 @@ class AuthRepository {
   }
 
   Stream<UserModel> getUserData(String uid) {
-    // Stream<>is used to persist the data, so when user refreshes the app, it goes to home screen and not the loginscreen
-    // snapshots is used here instead of .get(), cuz we are returning a Stream<>, get returns a Future<>
+    // Stream<>is used to persist the data, so when user refreshes the app, it
+    // goes to home screen and not the loginscreen
+    // .snapshots is used here instead of .get(), cuz we are returning
+    //a Stream<>, get returns a Future<>
     return _users.doc(uid).snapshots().map(
         (event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
   }
